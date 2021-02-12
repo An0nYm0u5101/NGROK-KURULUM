@@ -3,6 +3,7 @@ if [[ -a $PREFIX/bin/ngrok ]];then
 	rm $PREFIX/bin/ngrok
 fi
 mv ngrok $PREFIX/bin/ngrok
+chmod 777 $PREFIX/bin/ngrok
 echo
 echo
 echo
