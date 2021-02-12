@@ -6,7 +6,7 @@ mv ngrok $PREFIX/bin/ngrok
 echo
 echo
 echo
-printf "\e[32m[✓]\e[1;97m KURULUM TANAMLANDI"
+printf "\e[32m[✓]\e[1;97m NGROK KURULUM TANAMLANDI"
 echo
 echo
 echo
