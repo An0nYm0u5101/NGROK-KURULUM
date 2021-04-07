@@ -1,1 +1,1 @@
-ngrok version 2.2.6
+Ngrok Kurulum
