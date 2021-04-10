@@ -1,4 +1,5 @@
 #!/bin/bash
+
 control=$(which unzip |wc -l)
 if [[ $control == 0 ]];then
 	echo
@@ -21,6 +22,17 @@ if [[ $control == 0 ]];then
 	echo
 	pkg install wget -y
 fi
+control=$(which curl |wc -l)
+if [[ $control == 0 ]];then
+	echo
+	echo
+	echo
+	printf "\e[32m[*]\e[97m WGET PAKETİ KURULUYOR"
+	echo
+	echo
+	echo
+	pkg install curl -y
+fi
 control=$(which php |wc -l)
 if [[ $control == 0 ]];then
 	echo
@@ -32,6 +44,12 @@ if [[ $control == 0 ]];then
 	echo
 	pkg install php -y
 fi
+if [[ $1 == güncelle ]];then
+	cd files
+	bash güncelleme.sh güncelle
+	exit
+fi
+
 _delete() {
 if [[ -a $PREFIX/bin/ngrok ]];then
 	rm $PREFIX/bin/ngrok
@@ -108,100 +126,54 @@ echo
 echo
 }
 _banner() {
-clear
-printf "
+printf "\e[32m
 
-███╗   ██╗ ██████╗ ██████╗  ██████╗ ██╗  ██╗
-████╗  ██║██╔════╝ ██╔══██╗██╔═══██╗██║ ██╔╝
-██╔██╗ ██║██║  ███╗██████╔╝██║   ██║█████╔╝ 
-██║╚██╗██║██║   ██║██╔══██╗██║   ██║██╔═██╗ 
-██║ ╚████║╚██████╔╝██║  ██║╚██████╔╝██║  ██╗
-╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝
-\e[32m                                            
-██╗  ██╗██╗   ██╗██████╗ ██╗   ██╗██╗     ██╗   ██╗███╗   ███╗
-██║ ██╔╝██║   ██║██╔══██╗██║   ██║██║     ██║   ██║████╗ ████║
-█████╔╝ ██║   ██║██████╔╝██║   ██║██║     ██║   ██║██╔████╔██║
-██╔═██╗ ██║   ██║██╔══██╗██║   ██║██║     ██║   ██║██║╚██╔╝██║
-██║  ██╗╚██████╔╝██║  ██║╚██████╔╝███████╗╚██████╔╝██║ ╚═╝ ██║
-╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝\e[97m
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+\e[1;33m
 
-            \e[1;4;31m# Coded By UmuT KaRa #\e[0;1;97m
+    $(cat ngrok-versions |wc -l)\e[1;97m ADET NGROK VERSİYONU
 
-\e[31m ──────────  \e[97mNgrok Version 2.2.8  \e[31m ──────────
+    TEK TEK OTOMATİK OLARAK KURULACAK VE
 
-\e[31m ──────────  \e[97mNgrok Version 2.2.6  \e[31m ──────────
+    \e[32mBAŞARILI \e[1;97mOLANA KADAR TEST EDİLECEKTİR...\e[1;32m
 
-\e[31m ──────────  \e[97mNgrok Güncel Version \e[31m ──────────\e[1;32m
-
-
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+\e[1;97m
-
- 3 ADET NGROK VERSİONU
-
- TEK TEK OTOMATİK OLARAK KURULUP TEST EDİLECEK
-
- 1 TANESİ BAŞARILI OLURSA SCRİPT SONLANACAKTIR...\e[1;32m
-
- +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+\e[1;97m
+  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-++-+-+-+-+-+-+\e[1;97m
  "
 echo
 echo
 echo
 echo
 echo
-sleep 10
+sleep 5
 }
-_banner
+clear
 cd files
-_2_2_8() {
-	_delete
-	cd ngrok-2-2-8
-	cp ngrok $PREFIX/bin/ngrok
-	chmod 777 $PREFIX/bin/ngrok
-	echo
-	echo
-	echo
-	printf "\e[32m[✓]\e[1;97m NGROK \e[33mVERSİON 2.2.8\e[97m KURULUM TANAMLANDI"
-	echo
-	echo
-	echo
-	sleep 2
-	cd ..
-	_test
-}
-_2_2_6() {
-	_delete
-	unzip ngrok-2_2_6.zip
-	mv ngrok_2_2_6 $PREFIX/bin/ngrok
-	chmod 777 $PREFIX/bin/ngrok
-	echo
-	echo
-	echo
-	printf "\e[32m[✓]\e[1;97m NGROK \e[33mVERSİON 2.2.6\e[97m KURULUM TANAMLANDI"
-	echo
-	echo
-	echo
-	sleep 2
-	_test
-}
-_guncel() {
-	_delete
-	wget https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-arm64.zip
-	unzip ngrok-stable-linux-arm64.zip
-	rm ngrok-stable-linux-arm64.zip
-	mv ngrok $PREFIX/bin/ngrok
-	chmod 777 $PREFIX/bin/ngrok
-	echo
-	echo
-	echo
-	printf "\e[32m[✓]\e[1;97m NGROK \e[33mGÜNCEL VERSİON\e[97m KURULUM TANAMLANDI"
-	echo
-	echo
-	echo
-	sleep 2
-	_test
-}
-_2_2_8
-_2_2_6
-_guncel
+#bash güncelleme.sh
+bash banner.sh
+_banner
 
+_full_versions() {
+	#curl -s https://dl.equinox.io/ngrok/ngrok/stable/archive |grep linux-arm64.zip > ngrok-versions
+
+	total=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}'|wc -l)
+	for version in `seq 1 $total`;do
+		ngrok_versions=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}'|sed -n $version\p)
+		ngrok_version_no=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}' |sed -n $version\p |grep -o ngrok-[0-9.]\*-linux |tr -d "ngrok-linux-")
+		ngrok_zip_name=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}' |sed -n $version\p |grep -o ngrok-[^,]\*zip)
+		_delete
+		wget $ngrok_versions
+		unzip $ngrok_zip_name
+		rm $ngrok_zip_name
+		mv ngrok $PREFIX/bin/ngrok
+		chmod 777 $PREFIX/bin/ngrok
+		echo
+		echo
+		echo
+		printf "\e[32m[✓]\e[1;97m NGROK \e[33mVERSİON $ngrok_version_no\e[97m KURULUM TANAMLANDI"
+		echo
+		echo
+		echo
+		sleep 2
+		_test
+	done
+}
+_full_versions
