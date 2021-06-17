@@ -148,13 +148,12 @@ if [[ -a ../updates_infos ]];then
 	exit
 fi
 bash banner.sh
+if [[ $1 == --all ]];then
+	mv ngrok-versions .ngrok-versions
+	curl -s https://dl.equinox.io/ngrok/ngrok/stable/archive |grep linux-arm64.zip > ngrok-versions
+fi
 _banner
-
 _versions() {
-	if [[ $1 == --all ]];then
-		mv ngrok-versions .ngrok-versions
-		curl -s https://dl.equinox.io/ngrok/ngrok/stable/archive |grep linux-arm64.zip > ngrok-versions
-	fi
 	total=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}'|wc -l)
 	for version in `seq 1 $total`;do
 		ngrok_versions=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}'|sed -n $version\p)
