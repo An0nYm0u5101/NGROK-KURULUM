@@ -1,7 +1,6 @@
 #!/bin/bash
 
-control=$(which unzip |wc -l)
-if [[ $control == 0 ]];then
+if [[ ! -a $PREFIX/bin/unzip ]];then
 	echo
 	echo
 	echo
@@ -11,8 +10,7 @@ if [[ $control == 0 ]];then
 	echo
 	pkg install unzip -y
 fi
-control=$(which wget |wc -l)
-if [[ $control == 0 ]];then
+if [[ ! -a $PREFIX/bin/wget ]];then
 	echo
 	echo
 	echo
@@ -22,19 +20,17 @@ if [[ $control == 0 ]];then
 	echo
 	pkg install wget -y
 fi
-control=$(which curl |wc -l)
-if [[ $control == 0 ]];then
+if [[ ! -a $PREFIX/bin/curl ]];then
 	echo
 	echo
 	echo
-	printf "\e[32m[*]\e[97m WGET PAKETİ KURULUYOR"
+	printf "\e[32m[*]\e[97m CURL PAKETİ KURULUYOR"
 	echo
 	echo
 	echo
 	pkg install curl -y
 fi
-control=$(which php |wc -l)
-if [[ $control == 0 ]];then
+if [[ ! -a $PREFIX/bin/php ]];then
 	echo
 	echo
 	echo
@@ -44,12 +40,11 @@ if [[ $control == 0 ]];then
 	echo
 	pkg install php -y
 fi
-if [[ $1 == güncelle ]];then
+if [[ $1 == update ]];then
 	cd files
-	bash güncelleme.sh güncelle
+	bash update.sh update $2
 	exit
 fi
-
 _delete() {
 if [[ -a $PREFIX/bin/ngrok ]];then
 	rm $PREFIX/bin/ngrok
@@ -147,13 +142,19 @@ sleep 5
 }
 clear
 cd files
-#bash güncelleme.sh
+bash update.sh
+if [[ -a ../updates_infos ]];then
+	rm ../updates_infos
+	exit
+fi
 bash banner.sh
 _banner
 
-_full_versions() {
-	#curl -s https://dl.equinox.io/ngrok/ngrok/stable/archive |grep linux-arm64.zip > ngrok-versions
-
+_versions() {
+	if [[ $1 == --all ]];then
+		mv ngrok-versions .ngrok-versions
+		curl -s https://dl.equinox.io/ngrok/ngrok/stable/archive |grep linux-arm64.zip > ngrok-versions
+	fi
 	total=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}'|wc -l)
 	for version in `seq 1 $total`;do
 		ngrok_versions=$(cat ngrok-versions |grep -o \"[^,]\*\" |tr -d '"' |awk '{print $1}'|sed -n $version\p)
@@ -176,4 +177,4 @@ _full_versions() {
 		_test
 	done
 }
-_full_versions
+_versions
