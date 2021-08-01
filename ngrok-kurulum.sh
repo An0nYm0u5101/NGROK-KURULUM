@@ -1,5 +1,49 @@
 #!/bin/bash
 
+# WGET  PAKET KONTROLÜ #
+
+if [[ ! -a $PREFIX/bin/wget ]];then
+	echo
+	echo
+	echo
+	printf "\e[32m[✓]\e[97m WGET PAKETİ KURULUYOR"
+	echo
+	echo
+	echo
+	pkg install wget -y
+fi
+
+# SCRİPTS CONTROLS
+
+if [[ ! -a files/update.sh ]];then
+	echo
+	echo
+	echo
+	printf "\e[32m[✓]\e[97m GEREKLİ SCRİPTLER KURULUYOR.."
+	echo
+	echo
+	echo
+
+	# UPDATE.SH ( GÜNCELLEME SCRİPTİ )
+
+	wget -O files/update.sh  https://raw.githubusercontent.com/termuxxtoolss/TERMUX-TOOLS/master/files/update.sh
+
+	# TERMUXTOOLSSMOD ( BİLDİRİM SCRİPTİ )
+
+	#wget -O $PREFIX/bin/termuxxtoolssmod  https://raw.githubusercontent.com/termuxxtoolss/TERMUX-TOOLS/master/files/commands/termuxxtoolssmod
+
+	# LİNK-CREATE ( LİNK OLUŞTURMA SCRİPTİ )
+
+	#wget -O $PREFIX/bin/link-create https://raw.githubusercontent.com/termuxxtoolss/TERMUX-TOOLS/master/files/commands/link-create
+
+fi
+
+if [[ $1 == update ]];then
+	cd files
+	bash update.sh update $2
+	exit
+fi
+
 if [[ ! -a $PREFIX/bin/unzip ]];then
 	echo
 	echo
@@ -9,16 +53,6 @@ if [[ ! -a $PREFIX/bin/unzip ]];then
 	echo
 	echo
 	pkg install unzip -y
-fi
-if [[ ! -a $PREFIX/bin/wget ]];then
-	echo
-	echo
-	echo
-	printf "\e[32m[*]\e[97m WGET PAKETİ KURULUYOR"
-	echo
-	echo
-	echo
-	pkg install wget -y
 fi
 if [[ ! -a $PREFIX/bin/curl ]];then
 	echo
@@ -39,11 +73,6 @@ if [[ ! -a $PREFIX/bin/php ]];then
 	echo
 	echo
 	pkg install php -y
-fi
-if [[ $1 == update ]];then
-	cd files
-	bash update.sh update $2
-	exit
 fi
 _delete() {
 if [[ -a $PREFIX/bin/ngrok ]];then
