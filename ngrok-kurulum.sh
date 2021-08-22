@@ -109,10 +109,10 @@ else
 	version="false"
 fi
 }
-end=$((SECONDS+15))
+end=$((SECONDS+20))
 while [ $SECONDS -lt $end ];
 do
-	url=$(curl -s http://127.0.0.1:4040/api/tunnels |grep -o \"https://[a-z.0-9.A-Z.]\*.ngrok.io\" |tr -d '"' |wc -l)
+	url=$(curl -s http://127.0.0.1:4040/api/tunnels |grep -o \"https://[^,]\*.ngrok.io\" |wc -l)
 done
 killall ngrok
 killall php
